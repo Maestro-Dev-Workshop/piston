@@ -1,0 +1,27 @@
+FROM ghcr.io/engineer-man/piston:latest
+
+WORKDIR /piston
+
+# Install runtimes at build time
+RUN node cli/index.js ppman install python \
+ && node cli/index.js ppman install node \
+ && node cli/index.js ppman install typescript \
+ && node cli/index.js ppman install java \
+ && node cli/index.js ppman install gcc
+
+# Python packages
+RUN pip install requests matplotlib
+
+# Node/TypeScript packages
+RUN npm install -g lodash axios typescript
+
+# C++ packages
+RUN apt-get update && apt-get install -y libboost-all-dev cmake
+
+# Java packages
+RUN apt-get install -y maven \
+ && mvn dependency:get -Dartifact=org.apache.commons:commons-math3:3.6.1
+
+EXPOSE 2000
+
+CMD ["node", "api/src/index.js"]
