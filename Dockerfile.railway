@@ -10,12 +10,12 @@ RUN npm install
 RUN cd cli && npm install
 RUN cd api && npm install
 
-# Install runtimes at build time
-RUN node cli/index.js ppman install python \
- && node cli/index.js ppman install node \
- && node cli/index.js ppman install typescript \
- && node cli/index.js ppman install java \
- && node cli/index.js ppman install gcc
+# Build runtimes
+RUN cd packages/python/3.10.0 && bash build.sh
+RUN cd packages/java/15.0.2 && bash build.sh
+RUN cd packages/node/20.11.1 && bash build.sh
+RUN cd packages/typescript/5.0.3 && bash build.sh
+RUN cd packages/gcc/10.2.0 && bash build.sh
 
 # Python packages
 RUN pip install requests matplotlib
