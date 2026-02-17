@@ -7,6 +7,8 @@ COPY . .
 
 # Install Node dependencies for CLI & API
 RUN npm install
+RUN cd cli && npm install
+RUN cd api && npm install
 
 # Install runtimes at build time
 RUN node cli/index.js ppman install python \
