@@ -52,9 +52,9 @@ RUN /piston/packages/python/3.10.0/bin/pip3 install requests matplotlib
 # Add Java runtime to PATH
 ENV PATH="/piston/packages/java/15.0.2/bin:$PATH"
 # Install Maven and fetch Java dependency
-RUN apt-get update && apt-get install -y maven \
- && mvn dependency:get -Dartifact=org.apache.commons:commons-math3:3.6.1 \
- && rm -rf /var/lib/apt/lists/*
+RUN mkdir -p /piston/packages/java/libs \
+ && curl -L -o /piston/packages/java/libs/commons-math3-3.6.1.jar \
+    https://repo1.maven.org/maven2/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1.jar
 
 # Add Node/TypeScript runtime to PATH
 ENV PATH="/piston/packages/node/20.11.1/bin:/piston/packages/typescript/5.0.3/bin:$PATH"
