@@ -2,8 +2,16 @@ FROM ghcr.io/engineer-man/piston:latest
 
 WORKDIR /piston
 
-# Copy repo contents into the image
-COPY . .
+# Copy only code and necessary folders
+COPY package.json ./package.json 
+COPY package-lock.json  ./package-lock.json 
+COPY api/ ./api/
+COPY cli/ ./cli/
+COPY packages/python ./packages/python
+COPY packages/java ./packages/java
+COPY packages/node ./packages/node
+COPY packages/type ./packages/type
+# COPY packages/gcc ./packages/gcc
 
 # System dependencies
 RUN sed -i 's|deb.debian.org|archive.debian.org|g' /etc/apt/sources.list \
