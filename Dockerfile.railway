@@ -5,6 +5,30 @@ WORKDIR /piston
 # Copy repo contents into the image
 COPY . .
 
+# System dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    tar \
+    gzip \
+    xz-utils \
+    build-essential \
+    make \
+    gcc \
+    g++ \
+    zlib1g-dev \
+    libssl-dev \
+    libbz2-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    llvm \
+    libncurses5-dev \
+    libncursesw5-dev \
+    tk-dev \
+    libffi-dev \
+    wget \
+    git \
+ && rm -rf /var/lib/apt/lists/*
+
 # Install Node dependencies for CLI & API
 RUN npm install
 RUN cd cli && npm install
