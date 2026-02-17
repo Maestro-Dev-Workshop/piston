@@ -44,20 +44,32 @@ RUN cd packages/python/3.10.0 && bash build.sh
 RUN cd packages/java/15.0.2 && bash build.sh
 RUN cd packages/node/20.11.1 && bash build.sh
 RUN cd packages/typescript/5.0.3 && bash build.sh
-RUN cd packages/gcc/10.2.0 && bash build.sh
+# RUN cd packages/gcc/10.2.0 && bash build.sh
 
 # Python packages
-RUN pip install requests matplotlib
+RUN /piston/packages/python/3.10.0/bin/pip3 install requests matplotlib
 
-# Node/TypeScript packages
-RUN npm install -g lodash axios typescript
+# Add Java runtime to PATH
+ENV PATH="/piston/packages/java/15.0.2/bin:$PATH"
+# Install Maven and fetch Java dependency
+RUN apt-get update && apt-get install -y maven \
+ && mvn dependency:get -Dartifact=org.apache.commons:commons-math3:3.6.1 \
+ && rm -rf /var/lib/apt/lists/*
+
+# Add Node/TypeScript runtime to PATH
+ENV PATH="/piston/packages/node/20.11.1/bin:/piston/packages/typescript/5.0.3/bin:$PATH"
+# Install packages locally for this runtime
+RUN npm install lodash axios typescript
+# Reset PATH back to base image Node (optional)
+ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 # C++ packages
-RUN apt-get update && apt-get install -y libboost-all-dev cmake
+# ENV PATH="/piston/packages/gcc/10.2.0/bin:$PATH"
+# # Install only system libraries (Boost, CMake) if needed
+# RUN apt-get update && apt-get install -y libboost-all-dev cmake \
+#  && rm -rf /var/lib/apt/lists/*
 
-# Java packages
-RUN apt-get install -y maven \
- && mvn dependency:get -Dartifact=org.apache.commons:commons-math3:3.6.1
+
 
 EXPOSE 2000
 
