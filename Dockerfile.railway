@@ -5,6 +5,9 @@ WORKDIR /piston
 # Copy repo contents into the image
 COPY . .
 
+# Install Node dependencies for CLI & API
+RUN npm install
+
 # Install runtimes at build time
 RUN node cli/index.js ppman install python \
  && node cli/index.js ppman install node \
