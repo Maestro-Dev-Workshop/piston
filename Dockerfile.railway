@@ -10,7 +10,7 @@ COPY cli/ ./cli/
 COPY packages/python ./packages/python
 COPY packages/java ./packages/java
 COPY packages/node ./packages/node
-COPY packages/type ./packages/type
+COPY packages/typescript ./packages/typescript
 # COPY packages/gcc ./packages/gcc
 
 # System dependencies
